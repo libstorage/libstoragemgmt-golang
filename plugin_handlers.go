@@ -606,13 +606,13 @@ func handleFsSnapShotRestore(p *Plugin, msg *requestMsg) (interface{}, error) {
 	return p.cb.File.FsSnapShotRestore(args.Fs, args.Ss, args.All, args.Files, args.RestoreFiles)
 }
 
-func handleFsHasChildDep(p *Plugin, msg *requestMsg) (interface{}, error) {
-	type fsHasChildDepsArgs struct {
-		Fs    *FileSystem `json:"fs"`
-		Files []string    `json:"files"`
-		Flags uint64      `json:"flags"`
-	}
+type fsHasChildDepsArgs struct {
+	Fs    *FileSystem `json:"fs"`
+	Files []string    `json:"files"`
+	Flags uint64      `json:"flags"`
+}
 
+func handleFsHasChildDep(p *Plugin, msg *requestMsg) (interface{}, error) {
 	var args fsHasChildDepsArgs
 	if uE := json.Unmarshal(msg.Params, &args); uE != nil {
 		return nil, invalidArgs(msg.Method, uE)
@@ -622,12 +622,6 @@ func handleFsHasChildDep(p *Plugin, msg *requestMsg) (interface{}, error) {
 }
 
 func handleFsChildDepRm(p *Plugin, msg *requestMsg) (interface{}, error) {
-	type fsHasChildDepsArgs struct {
-		Fs    *FileSystem `json:"fs"`
-		Files []string    `json:"files"`
-		Flags uint64      `json:"flags"`
-	}
-
 	var args fsHasChildDepsArgs
 	if uE := json.Unmarshal(msg.Params, &args); uE != nil {
 		return nil, invalidArgs(msg.Method, uE)

@@ -26,7 +26,7 @@ func Client(uri string, password string, timeout uint32) (*ClientConnection, err
 	if parseError != nil {
 		return nil, &errors.LsmError{
 			Code:    errors.InvalidArgument,
-			Message: fmt.Sprintf("invalid uri: %w", parseError)}
+			Message: fmt.Sprintf("invalid uri: %s", parseError)}
 	}
 
 	pluginName := p.Scheme

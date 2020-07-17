@@ -81,27 +81,27 @@ func (t *transPort) invoke(cmd string, args map[string]interface{}, result inter
 	if serialError != nil {
 		return &errors.LsmError{
 			Code:    errors.LibBug,
-			Message: fmt.Sprintf("Errors serializing parameters %w\n", serialError)}
+			Message: fmt.Sprintf("Errors serializing parameters %s\n", serialError)}
 	}
 
 	if sendError := t.send(string(msgSerialized)); sendError != nil {
 		return &errors.LsmError{
 			Code:    errors.TransPortComunication,
-			Message: fmt.Sprintf("Error writing to unix domain socket %w\n", sendError)}
+			Message: fmt.Sprintf("Error writing to unix domain socket %s\n", sendError)}
 	}
 
 	var reply, replyError = t.recv()
 	if replyError != nil {
 		return &errors.LsmError{
 			Code:    errors.TransPortComunication,
-			Message: fmt.Sprintf("Error reading from unix domain socket %w\n", replyError)}
+			Message: fmt.Sprintf("Error reading from unix domain socket %s\n", replyError)}
 	}
 
 	var what responseMsg
 	if replyUnmarsal := json.Unmarshal(reply, &what); replyUnmarsal != nil {
 		return &errors.LsmError{
 			Code:    errors.PluginBug,
-			Message: fmt.Sprintf("Unparsable response from plugin %w\n", replyUnmarsal)}
+			Message: fmt.Sprintf("Unparsable response from plugin %s\n", replyUnmarsal)}
 	}
 
 	if what.Error != nil {
@@ -132,14 +132,14 @@ func (t *transPort) readRequest() (*requestMsg, error) {
 	if requestError != nil {
 		return nil, &errors.LsmError{
 			Code:    errors.TransPortComunication,
-			Message: fmt.Sprintf("Error reading from unix domain socket %w\n", requestError)}
+			Message: fmt.Sprintf("Error reading from unix domain socket %s\n", requestError)}
 	}
 
 	var what requestMsg
 	if requestUnmarsal := json.Unmarshal(request, &what); requestUnmarsal != nil {
 		return nil, &errors.LsmError{
 			Code:    errors.TransPortInvalidArg,
-			Message: fmt.Sprintf("Unparsable request from client %w\n", requestUnmarsal)}
+			Message: fmt.Sprintf("Unparsable request from client %s\n", requestUnmarsal)}
 	}
 	return &what, nil
 }
@@ -154,13 +154,13 @@ func (t *transPort) sendResponse(response interface{}) error {
 	if serialError != nil {
 		return &errors.LsmError{
 			Code:    errors.PluginBug,
-			Message: fmt.Sprintf("Errors serializing response %w\n", serialError)}
+			Message: fmt.Sprintf("Errors serializing response %s\n", serialError)}
 	}
 
 	if sendError := t.send(string(msgSerialized)); sendError != nil {
 		return &errors.LsmError{
 			Code:    errors.TransPortComunication,
-			Message: fmt.Sprintf("Error writing to unix domain socket %w\n", sendError)}
+			Message: fmt.Sprintf("Error writing to unix domain socket %s\n", sendError)}
 	}
 	return nil
 }
@@ -177,13 +177,13 @@ func (t *transPort) sendError(err error) error {
 	if serialError != nil {
 		return &errors.LsmError{
 			Code:    errors.PluginBug,
-			Message: fmt.Sprintf("Errors serializing error %w\n", serialError)}
+			Message: fmt.Sprintf("Errors serializing error %s\n", serialError)}
 	}
 
 	if sendError := t.send(string(msgSerialized)); sendError != nil {
 		return &errors.LsmError{
 			Code:    errors.TransPortComunication,
-			Message: fmt.Sprintf("Error writing to unix domain socket %w\n", sendError)}
+			Message: fmt.Sprintf("Error writing to unix domain socket %s\n", sendError)}
 	}
 	return nil
 }

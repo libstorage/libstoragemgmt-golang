@@ -13,7 +13,7 @@ import (
 func invalidArgs(msg string, e error) error {
 	return &errors.LsmError{
 		Code:    errors.TransPortInvalidArg,
-		Message: fmt.Sprintf("%s: invalid arguments(s) %w\n", msg, e)}
+		Message: fmt.Sprintf("%s: invalid arguments(s) %s\n", msg, e)}
 }
 
 func handleRegister(p *Plugin, msg *requestMsg) (interface{}, error) {

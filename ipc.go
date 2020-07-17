@@ -144,6 +144,15 @@ func (t *transPort) readRequest() (*requestMsg, error) {
 	return &what, nil
 }
 
+func (t *transPort) sendIt(msg string) error {
+	if sendError := t.send(msg); sendError != nil {
+		return &errors.LsmError{
+			Code:    errors.TransPortComunication,
+			Message: fmt.Sprintf("Error writing to unix domain socket %s\n", sendError)}
+	}
+	return nil
+}
+
 func (t *transPort) sendResponse(response interface{}) error {
 	msg := map[string]interface{}{
 		"result": response,
@@ -157,12 +166,7 @@ func (t *transPort) sendResponse(response interface{}) error {
 			Message: fmt.Sprintf("Errors serializing response %s\n", serialError)}
 	}
 
-	if sendError := t.send(string(msgSerialized)); sendError != nil {
-		return &errors.LsmError{
-			Code:    errors.TransPortComunication,
-			Message: fmt.Sprintf("Error writing to unix domain socket %s\n", sendError)}
-	}
-	return nil
+	return t.sendIt(string(msgSerialized))
 }
 
 func (t *transPort) sendError(err error) error {
@@ -180,12 +184,7 @@ func (t *transPort) sendError(err error) error {
 			Message: fmt.Sprintf("Errors serializing error %s\n", serialError)}
 	}
 
-	if sendError := t.send(string(msgSerialized)); sendError != nil {
-		return &errors.LsmError{
-			Code:    errors.TransPortComunication,
-			Message: fmt.Sprintf("Error writing to unix domain socket %s\n", sendError)}
-	}
-	return nil
+	return t.sendIt(string(msgSerialized))
 }
 
 func (t *transPort) send(msg string) error {

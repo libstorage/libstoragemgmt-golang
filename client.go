@@ -605,11 +605,7 @@ func (c *ClientConnection) FsClone(
 	sync bool) (*FileSystem, *string, error) {
 	args := map[string]interface{}{"src_fs": *srcFs, "dest_fs_name": destName}
 
-	if optionalSnapShot != nil {
-		args["snapshot"] = *optionalSnapShot
-	} else {
-		args["snapshot"] = nil
-	}
+	handleSnapshotOptArg(args, optionalSnapShot)
 
 	var returnedFs FileSystem
 	var result [2]json.RawMessage
@@ -631,11 +627,7 @@ func (c *ClientConnection) FsFileClone(
 		"dest_file_name": dstFileName,
 	}
 
-	if optionalSnapShot != nil {
-		args["snapshot"] = *optionalSnapShot
-	} else {
-		args["snapshot"] = nil
-	}
+	handleSnapshotOptArg(args, optionalSnapShot)
 
 	var result json.RawMessage
 	return c.getJobOrNone(c.tp.invoke("fs_file_clone", args, &result), result, sync)

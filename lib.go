@@ -33,6 +33,15 @@ func emptySliceIfNil(provided []string) []string {
 	return make([]string, 0)
 }
 
+func handleSnapshotOptArg(args map[string]interface{}, ss *FileSystemSnapShot) {
+
+	if ss != nil {
+		args["snapshot"] = *ss
+	} else {
+		args["snapshot"] = nil
+	}
+}
+
 func handleSearch(args map[string]interface{}, search []string) bool {
 	rc := true
 

@@ -1,9 +1,8 @@
 [![Build Status](https://travis-ci.org/libstorage/libstoragemgmt-golang.svg?branch=master)](https://travis-ci.org/libstorage/libstoragemgmt-golang)
 
-Work in progress, but almost complete from a client library perspective.
+A golang library for libStorageMgmt client and plugins.
 
-
-An example listing systems
+A client example listing systems
 ```go
 package main
 
@@ -23,5 +22,6 @@ func main() {
 }
 
 ```
-
-Example plugin library use can be found here: [https://github.com/tasleson/simgo](https://github.com/tasleson/simgo)
+For an example of how to write a libStorageMgmt plugin using this, please see
+the example:
+[https://github.com/tasleson/simgo](https://github.com/tasleson/simgo)

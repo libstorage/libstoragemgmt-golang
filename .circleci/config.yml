@@ -1,0 +1,34 @@
+version: 2.1
+jobs:
+  fedora:
+    docker:
+      - image: fedora:33
+    steps:
+      - checkout
+      - run:
+         command: ./test/docker_travis_test.sh
+         no_output_timeout: 20m
+  el7:
+    docker:
+      - image: centos:7
+    steps:
+      - checkout
+      - run:
+         command: ./test/docker_travis_test.sh
+         no_output_timeout: 20m
+  el8:
+    docker:
+      - image: centos:8
+    steps:
+      - checkout
+      - run:
+         command: ./docker_travis_test.sh
+         no_output_timeout: 20m
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+    - fedora
+    - el7
+    - el8

@@ -13,10 +13,6 @@ elif [ "CHK$(rpm -E "%{?el7}")" != "CHK" ];then
     # epel needed for golang
     yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y || exit 1
     yum install python-six golang libstoragemgmt libstoragemgmt-devel -y || exit 1
-elif [ "CHK$(rpm -E "%{?el6}")" != "CHK" ];then
-    # epel needed for golang and libstoragemgmt itself
-    yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm -y || exit 1
-    yum install python-six golang libstoragemgmt libstoragemgmt-devel -y || exit 1
 else
     echo "Unsupported distribution"
     exit 1

@@ -29,6 +29,5 @@ workflows:
   version: 2
   workflow:
     jobs:
-    - fedora
     - el7
     - el8

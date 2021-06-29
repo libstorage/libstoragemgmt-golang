@@ -8,6 +8,8 @@
 if [ "CHK$(rpm -E "%{?fedora}")" != "CHK" ];then
     dnf install python3-six golang libstoragemgmt libstoragemgmt-devel -y || exit 1
 elif [ "CHK$(rpm -E "%{?el8}")" != "CHK" ];then
+    dnf install dnf-plugins-core -y || exit 1
+    dnf config-manager --set-enabled powertools -y || exit 1
     dnf install python3-six golang libstoragemgmt libstoragemgmt-devel -y || exit 1
 elif [ "CHK$(rpm -E "%{?el7}")" != "CHK" ];then
     # epel needed for golang
@@ -22,7 +24,7 @@ mkdir -p /tmp/go/src/github.com/libstorage || exit 1
 
 # Circle places you at root of checkout
 cp -av . /tmp/go/src/github.com/libstorage/. || exit 1
-cd /tmp/go/src/github.com/libstorage/libstoragemgmt-golang || exit 1
+cd /tmp/go/src/github.com/libstorage || exit 1
 
 # Speed up tests
 export LSM_SIM_TIME=0

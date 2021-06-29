@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/libstorage/libstoragemgmt-golang.svg?branch=master)](https://travis-ci.org/libstorage/libstoragemgmt-golang)
+[![libstorage](https://circleci.com/gh/libstorage/libstoragemgmt-golang.svg?style=svg)](https://github.com/libstorage/libstoragemgmt-golang)
+
 
 A golang library for libStorageMgmt client and plugins.
 

@@ -19,7 +19,9 @@ else
 fi
 
 mkdir -p /tmp/go/src/github.com/libstorage || exit 1
-cp -av /libstoragemgmt-golang /tmp/go/src/github.com/libstorage/. || exit 1
+
+# Circle places you at root of checkout
+cp -av . /tmp/go/src/github.com/libstorage/. || exit 1
 cd /tmp/go/src/github.com/libstorage/libstoragemgmt-golang || exit 1
 
 # Speed up tests

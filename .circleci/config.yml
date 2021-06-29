@@ -22,7 +22,7 @@ jobs:
     steps:
       - checkout
       - run:
-         command: ./docker_travis_test.sh
+         command: ./test/docker_travis_test.sh
          no_output_timeout: 20m
 
 workflows:

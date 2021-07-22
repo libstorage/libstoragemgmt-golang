@@ -5,7 +5,6 @@ package libstoragemgmt
 import (
 	"encoding/json"
 	"fmt"
-	"io/fs"
 	"os"
 	"path/filepath"
 	"time"
@@ -30,7 +29,7 @@ func getPlugins(path string) []string {
 			if err != nil {
 				return err
 			}
-			if info.IsDir() == false && (info.Mode()&fs.ModeSocket != 0) {
+			if info.IsDir() == false && (info.Mode()&os.ModeSocket != 0) {
 				plugins = append(plugins, path)
 			}
 			return nil

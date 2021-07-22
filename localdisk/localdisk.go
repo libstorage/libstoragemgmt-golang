@@ -2,6 +2,7 @@
 
 package localdisk
 
+// #cgo pkg-config: libstoragemgmt
 // #include <stdio.h>
 // #include <libstoragemgmt/libstoragemgmt.h>
 // #include <stdlib.h>

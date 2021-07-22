@@ -1,10 +1,11 @@
 #!/bin/bash
 
-# # To debug, try:
+# To run locally, do:
 # podman pull fedora
-# podman run --privileged --rm=false --tty=true --interactive=true \
-#    -v `pwd`:/libstoragemgmt-golang:rw fedora \
-#    /bin/bash -c /libstoragemgmt-golang/test/docker_travis_test.sh
+# Run the following in the root of the golang source tree
+# podman run --privileged --rm=false --tty=true --interactive=true -v \
+#    `pwd`:/libstoragemgmt-golang:rw fedora \
+#    /bin/bash -c "cd /libstoragemgmt-golang && pwd && test/docker_travis_test.sh"
 if [ "CHK$(rpm -E "%{?fedora}")" != "CHK" ];then
     dnf install python3-six golang libstoragemgmt libstoragemgmt-devel git-core -y || exit 1
 elif [ "CHK$(rpm -E "%{?el8}")" != "CHK" ];then

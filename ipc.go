@@ -38,7 +38,7 @@ func newTransport(pluginUdsPath string, checkErrors bool) (*transPort, error) {
 
 			return nil, &errors.LsmError{
 				Code:    errors.DameonNotRunning,
-				Message: "The libStorageMgmt daemon is not running (process name lsmd)"}
+				Message: fmt.Sprintf("The libStorageMgmt daemon is not running (process name lsmd) when trying to connect to: %s", pluginUdsPath)}
 		}
 
 		return nil, cError

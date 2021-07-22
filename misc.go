@@ -29,7 +29,7 @@ func getPlugins(path string) []string {
 			if err != nil {
 				return err
 			}
-			if info.IsDir() == false {
+			if info.IsDir() == false && (info.Mode()&os.ModeSocket != 0) {
 				plugins = append(plugins, path)
 			}
 			return nil

@@ -293,6 +293,17 @@ func TestFs(t *testing.T) {
 	assert.Equal(t, nil, c.Close())
 }
 
+func TestFsBadSearchArg(t *testing.T) {
+	var c, _ = lsm.Client(URI, PASSWORD, TMO)
+	var _, err = c.FileSystems("not_valid_search_args")
+
+	assert.NotNil(t, err)
+
+	t.Logf("Error: %s", err)
+
+	assert.Equal(t, nil, c.Close())
+}
+
 func TestNfsExports(t *testing.T) {
 	var c, _ = lsm.Client(URI, PASSWORD, TMO)
 	var items, err = c.NfsExports()

@@ -48,7 +48,7 @@ else
     elif [ "CHK$(rpm -E "%{?el8}")" != "CHK" ];then
         dnf install dnf-plugins-core -y || exit 1
         dnf config-manager --set-enabled powertools -y || exit 1
-        dnf install golang sed || exit 1
+        dnf install golang sed -y || exit 1
     elif [ "CHK$(rpm -E "%{?el7}")" != "CHK" ];then
         # epel needed for golang
         yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y || exit 1

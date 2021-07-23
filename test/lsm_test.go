@@ -293,6 +293,17 @@ func TestFs(t *testing.T) {
 	assert.Equal(t, nil, c.Close())
 }
 
+func TestFsBadSearchArg(t *testing.T) {
+	var c, _ = lsm.Client(URI, PASSWORD, TMO)
+	var _, err = c.FileSystems("not_valid_search_args")
+
+	assert.NotNil(t, err)
+
+	t.Logf("Error: %s", err)
+
+	assert.Equal(t, nil, c.Close())
+}
+
 func TestNfsExports(t *testing.T) {
 	var c, _ = lsm.Client(URI, PASSWORD, TMO)
 	var items, err = c.NfsExports()
@@ -843,6 +854,47 @@ func TestVolRaidCreate(t *testing.T) {
 		assert.Nil(t, jobID)
 		assert.Nil(t, volDelErr)
 	}
+
+	assert.Equal(t, nil, c.Close())
+}
+
+func TestVolRaidCreateBad(t *testing.T) {
+	var c, err = lsm.Client(URI, PASSWORD, TMO)
+	assert.Nil(t, err)
+	assert.NotNil(t, c)
+
+	var name = rs("lsm_go_vol_", 4)
+	var freeDisks []lsm.Disk
+
+	// Test no disks supplied
+	var _, volumeErr = c.VolRaidCreate(name, lsm.Raid5, freeDisks, 0)
+	assert.NotNil(t, volumeErr)
+
+	var disks, diskErr = c.Disks()
+	assert.Nil(t, diskErr)
+	for _, d := range disks {
+		if d.Status&(lsm.DiskStatusOk|lsm.DiskStatusFree) == lsm.DiskStatusOk|lsm.DiskStatusFree {
+			freeDisks = append(freeDisks, d)
+		}
+	}
+
+	var _, volumeErrRaid1 = c.VolRaidCreate(name, lsm.Raid1, freeDisks[0:1], 0)
+	assert.NotNil(t, volumeErrRaid1)
+
+	var _, volumeErrRaid5 = c.VolRaidCreate(name, lsm.Raid5, freeDisks[0:2], 0)
+	assert.NotNil(t, volumeErrRaid5)
+
+	var _, volumeErrRaid6 = c.VolRaidCreate(name, lsm.Raid6, freeDisks[0:2], 0)
+	assert.NotNil(t, volumeErrRaid6)
+
+	var _, volumeErrRaid10 = c.VolRaidCreate(name, lsm.Raid10, freeDisks[0:1], 0)
+	assert.NotNil(t, volumeErrRaid10)
+
+	var _, volumeErrRaid50 = c.VolRaidCreate(name, lsm.Raid50, freeDisks[0:1], 0)
+	assert.NotNil(t, volumeErrRaid50)
+
+	var _, volumeErrRaid60 = c.VolRaidCreate(name, lsm.Raid60, freeDisks[0:1], 0)
+	assert.NotNil(t, volumeErrRaid60)
 
 	assert.Equal(t, nil, c.Close())
 }

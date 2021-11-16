@@ -1222,9 +1222,17 @@ func TestHealthStatus(t *testing.T) {
 
 func checkError(t *testing.T, err error) {
 	var e = err.(*errors.LsmError)
+
 	if os.Getuid() == 0 {
+		if errors.NoSupport != e.Code {
+			fmt.Printf("checkError e: %v\n", e)
+		}
 		assert.Equal(t, errors.NoSupport, e.Code)
 	} else {
+		if e.Code != errors.PermissionDenied && e.Code != errors.NoSupport {
+			fmt.Printf("checkError e: %v\n", e)
+		}
+
 		assert.True(t, e.Code == errors.PermissionDenied || e.Code == errors.NoSupport)
 	}
 }

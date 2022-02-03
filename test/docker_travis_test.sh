@@ -47,7 +47,7 @@ else
         dnf install golang sed -y || exit 1
     elif [ "CHK$(rpm -E "%{?el8}")" != "CHK" ];then
         dnf install dnf-plugins-core -y || exit 1
-        dnf config-manager --set-enabled powertools -y || exit 1
+        dnf config-manager --set-enabled ol8_codeready_builder -y || exit 1
         dnf install golang sed -y || exit 1
     elif [ "CHK$(rpm -E "%{?el7}")" != "CHK" ];then
         # epel needed for golang

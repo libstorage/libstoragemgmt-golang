@@ -94,8 +94,8 @@ type JobStatusType uint32
 
 const (
 
-	// JobStatusInprogress indicated job is in progress
-	JobStatusInprogress JobStatusType = 1 + iota
+	// JobStatusInProgress indicated job is in progress
+	JobStatusInProgress JobStatusType = 1 + iota
 
 	// JobStatusComplete indicates job is complete
 	JobStatusComplete

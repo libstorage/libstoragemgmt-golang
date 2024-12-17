@@ -86,14 +86,14 @@ func (t *transPort) invoke(cmd string, args map[string]interface{}, result inter
 
 	if sendError := t.send(string(msgSerialized)); sendError != nil {
 		return &errors.LsmError{
-			Code:    errors.TransPortComunication,
+			Code:    errors.TransPortCommunication,
 			Message: fmt.Sprintf("Error writing to unix domain socket %s\n", sendError)}
 	}
 
 	var reply, replyError = t.recv()
 	if replyError != nil {
 		return &errors.LsmError{
-			Code:    errors.TransPortComunication,
+			Code:    errors.TransPortCommunication,
 			Message: fmt.Sprintf("Error reading from unix domain socket %s\n", replyError)}
 	}
 
@@ -131,7 +131,7 @@ func (t *transPort) readRequest() (*requestMsg, error) {
 	request, requestError := t.recv()
 	if requestError != nil {
 		return nil, &errors.LsmError{
-			Code:    errors.TransPortComunication,
+			Code:    errors.TransPortCommunication,
 			Message: fmt.Sprintf("Error reading from unix domain socket %s\n", requestError)}
 	}
 
@@ -147,7 +147,7 @@ func (t *transPort) readRequest() (*requestMsg, error) {
 func (t *transPort) sendIt(msg string) error {
 	if sendError := t.send(msg); sendError != nil {
 		return &errors.LsmError{
-			Code:    errors.TransPortComunication,
+			Code:    errors.TransPortCommunication,
 			Message: fmt.Sprintf("Error writing to unix domain socket %s\n", sendError)}
 	}
 	return nil

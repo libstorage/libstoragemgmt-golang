@@ -375,7 +375,7 @@ func (p *Plugin) Run() {
 		if err != nil {
 			if lsmError, ok := err.(*errors.LsmError); ok == true {
 
-				if lsmError.Code != errors.TransPortComunication {
+				if lsmError.Code != errors.TransPortCommunication {
 					p.tp.sendError(lsmError)
 					//fmt.Printf("Returned error %+v\n", lsmError)
 					continue

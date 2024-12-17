@@ -122,8 +122,8 @@ const (
 	// NotEnoughSpace ... Insufficient space to complete the request
 	NotEnoughSpace int32 = 350
 
-	//TransPortComunication ... Issue reading/writing to plugin
-	TransPortComunication int32 = 400
+	//TransPortCommunication ... Issue reading/writing to plugin
+	TransPortCommunication int32 = 400
 
 	// TransPortSerialization ... Issue with serializing the payload of a request
 	TransPortSerialization int32 = 401

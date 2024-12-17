@@ -63,7 +63,7 @@ func List() ([]string, error) {
 	return disks, nil
 }
 
-// Vpd83Seach seaches local disks for vpd
+// Vpd83Seach searches local disks for vpd
 func Vpd83Seach(vpd string) ([]string, error) {
 
 	cs := C.CString(vpd)
@@ -86,7 +86,7 @@ func Vpd83Seach(vpd string) ([]string, error) {
 }
 
 // SerialNumGet retrieves the serial number for the local
-// disk with the specfified path
+// disk with the specified path
 func SerialNumGet(diskPath string) (string, error) {
 	dp := C.CString(diskPath)
 	defer C.free(unsafe.Pointer(dp))

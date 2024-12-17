@@ -12,7 +12,7 @@ type PluginInfo struct {
 // System represents a storage system.
 // * A hardware RAID card
 // * A storage area network (SAN)
-// * A software solutions running on commidity hardware
+// * A software solutions running on commodity hardware
 // * A Linux system running NFS Service
 type System struct {
 	Class        string           `json:"class"`
@@ -985,7 +985,7 @@ const (
 	WriteCachePolicyWriteThrough
 )
 
-// WriteCacheStatus represente write cache status type
+// WriteCacheStatus represents write cache status type
 type WriteCacheStatus uint32
 
 const (
@@ -1028,7 +1028,7 @@ const (
 	ReadCacheStatusDisabled
 )
 
-// PhysicalDiskCache represents pyhsical disk caching type
+// PhysicalDiskCache represents physical disk caching type
 type PhysicalDiskCache uint32
 
 const (
@@ -1045,7 +1045,7 @@ const (
 	PhysicalDiskCacheUseDiskSetting
 )
 
-// VolumeCacheInfo contains informationa about volume caching values
+// VolumeCacheInfo contains information about volume caching values
 type VolumeCacheInfo struct {
 	WriteSetting       WriteCachePolicy
 	WriteStatus        WriteCacheStatus

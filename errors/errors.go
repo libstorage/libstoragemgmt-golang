@@ -86,7 +86,7 @@ const (
 	// NotFoundPool ... The specified pool was not found
 	NotFoundPool int32 = 203
 
-	// NotFoundFsSs ... The specfified file system/snap shot was not found
+	// NotFoundFsSs ... The specified file system/snap shot was not found
 	NotFoundFsSS int32 = 204
 
 	// NotFoundVolume ... The specified volume was not found

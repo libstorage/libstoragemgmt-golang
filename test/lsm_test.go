@@ -120,8 +120,8 @@ func TestJobs(t *testing.T) {
 		status, percent, err = c.JobStatus(*jobID, &volume)
 		assert.True(t, (percent >= 0 && percent <= 100))
 		assert.Nil(t, err)
-		assert.True(t, status == lsm.JobStatusInprogress || status == lsm.JobStatusComplete)
-		if status != lsm.JobStatusInprogress {
+		assert.True(t, status == lsm.JobStatusInProgress || status == lsm.JobStatusComplete)
+		if status != lsm.JobStatusInProgress {
 			break
 		}
 	}
@@ -1365,7 +1365,7 @@ func TestSystemModeType(t *testing.T) {
 }
 
 func TestJobStatusType(t *testing.T) {
-	assert.Equal(t, lsm.JobStatusType(1), lsm.JobStatusInprogress)
+	assert.Equal(t, lsm.JobStatusType(1), lsm.JobStatusInProgress)
 	assert.Equal(t, lsm.JobStatusType(3), lsm.JobStatusError)
 }
 

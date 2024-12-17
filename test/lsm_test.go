@@ -1390,7 +1390,7 @@ func TestPoolElementType(t *testing.T) {
 
 func TestPoolUnsupportedType(t *testing.T) {
 	assert.Equal(t, lsm.PoolUnsupportedType(1<<0), lsm.PoolUnsupportedVolumeGrow)
-	assert.Equal(t, lsm.PoolUnsupportedType(1<<1), lsm.PoolUnsupportedVolumeShink)
+	assert.Equal(t, lsm.PoolUnsupportedType(1<<1), lsm.PoolUnsupportedVolumeShrink)
 }
 
 func TestPoolStatusType(t *testing.T) {

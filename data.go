@@ -211,8 +211,8 @@ const (
 	// PoolUnsupportedVolumeGrow this pool does not allow growing volumes
 	PoolUnsupportedVolumeGrow PoolUnsupportedType = 1 << iota
 
-	// PoolUnsupportedVolumeShink this pool does not allow shrinking volumes
-	PoolUnsupportedVolumeShink
+	// PoolUnsupportedVolumeShrink this pool does not allow shrinking volumes
+	PoolUnsupportedVolumeShrink
 )
 
 // PoolStatusType type used to describe the status of pool
@@ -405,7 +405,7 @@ const (
 	//DiskStatusRemoved Disk was removed by administrator
 	DiskStatusRemoved
 
-	// DiskStatusStarting Disk is in the process of becomming ready.
+	// DiskStatusStarting Disk is in the process of becoming ready.
 	DiskStatusStarting
 
 	// DiskStatusStopping Disk is shutting down.
@@ -414,7 +414,7 @@ const (
 	// DiskStatusStopped Disk is stopped by administrator.
 	DiskStatusStopped
 
-	// DiskStatusInitializing Disk is not yet functional, could be initializing eg. RAID, zeroed or scrubed etc.
+	// DiskStatusInitializing Disk is not yet functional, could be initializing eg. RAID, zeroed or scrubbed etc.
 	DiskStatusInitializing
 
 	// DiskStatusMaintenanceMode In maintenance for bad sector scan, integrity check and etc
@@ -699,10 +699,10 @@ const (
 	// CapAgsGrantedToVol list access groups with access to volume
 	CapAgsGrantedToVol CapabilityType = 44
 
-	// CapHasChildDep indicates support for determing if volume has child dep.
+	// CapHasChildDep indicates support for determining if volume has child dep.
 	CapHasChildDep CapabilityType = 45
 
-	// CapChildDepRm indiates support for removing child dep.
+	// CapChildDepRm indicates support for removing child dep.
 	CapChildDepRm CapabilityType = 46
 
 	// CapAccessGroupCreateIscsiIqn supports ag creating with iSCSI initiator

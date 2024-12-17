@@ -95,6 +95,9 @@ const (
 	// NotFoundNfsExport ... The specified NFS export was not found
 	NotFoundNfsExport int32 = 206
 
+	// NotFoundGeneric ...A non-specific resource was not found
+	NotFoundGeneric int32 = 207
+
 	// NotFoundSystem ... The specified system was not found
 	NotFoundSystem int32 = 208
 

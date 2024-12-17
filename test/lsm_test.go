@@ -1518,6 +1518,84 @@ func TestVolumeEnableSerDes(t *testing.T) {
 	assert.Equal(t, "Volume", volDes.Class)
 }
 
+func TestLocalDiskLedSlotsHandleGet(t *testing.T) {
+
+	var handle, err = disks.LedSlotsHandleGet()
+	assert.Nil(t, err)
+	disks.LedSlotsHandleFree(handle)
+}
+
+func TestLocalDiskLedSlotsGet(t *testing.T) {
+
+	var slots []disks.LedSlot
+	var handle, err = disks.LedSlotsHandleGet()
+	assert.Nil(t, err)
+
+	slots, err = handle.Slots()
+	assert.Nil(t, err)
+
+	for _, s := range slots {
+		assert.True(t, (len(s.SlotId) > 0))
+	}
+
+	assert.Nil(t, err)
+	disks.LedSlotsHandleFree(handle)
+}
+
+func toggle_status(curr lsm.DiskLedStatusBitField) lsm.DiskLedStatusBitField {
+	var rc lsm.DiskLedStatusBitField
+	if curr&lsm.DiskLedStatusIdentOn == lsm.DiskLedStatusIdentOn {
+		rc |= lsm.DiskLedStatusIdentOff
+	} else {
+		rc |= lsm.DiskLedStatusIdentOn
+	}
+	if curr&lsm.DiskLedStatusFaultOn == lsm.DiskLedStatusFaultOn {
+		rc |= lsm.DiskLedStatusFaultOff
+	} else {
+		rc |= lsm.DiskLedStatusFaultOn
+	}
+
+	return rc
+}
+
+func TestLocalDiskLedSlotsGetSet(t *testing.T) {
+
+	var slots []disks.LedSlot
+	var handle, err = disks.LedSlotsHandleGet()
+	assert.Nil(t, err)
+
+	slots, err = handle.Slots()
+	assert.Nil(t, err)
+
+	for _, s := range slots {
+
+		if len(s.Device) > 0 {
+			// We have a device node
+			path_status, err := disks.LedStatusGet(s.Device)
+			assert.Nil(t, err)
+
+			slot_status, err := handle.StatusGet(&s)
+			assert.Nil(t, err)
+
+			assert.Equal(t, path_status, slot_status)
+
+			var expected_status = toggle_status(slot_status)
+			err = handle.StatusSet(&s, expected_status)
+			assert.Nil(t, err)
+			new_status, err := disks.LedStatusGet(s.Device)
+			assert.Nil(t, err)
+			assert.Equal(t, new_status, expected_status)
+
+			// Put led state to original
+			err = handle.StatusSet(&s, path_status)
+			assert.Nil(t, err)
+		}
+	}
+
+	assert.Nil(t, err)
+	disks.LedSlotsHandleFree(handle)
+}
+
 func TestClassSerDes(t *testing.T) {
 	objs := map[string]interface{}{
 		"System":       &lsm.System{},

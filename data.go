@@ -1097,3 +1097,45 @@ const (
 	// DiskLedStatusFaultUnknown fault LED is unknown
 	DiskLedStatusFaultUnknown
 )
+
+func append_s(dest string, append string, sep string) string {
+	if len(dest) > 0 {
+		return sep + append
+	}
+	return append
+}
+
+func (s DiskLedStatusBitField) String() string {
+	var rc string
+	var sep = ", "
+
+	if s&DiskLedStatusUnknown == DiskLedStatusUnknown {
+		rc += append_s(rc, "Unknown", sep)
+	}
+
+	if s&DiskLedStatusIdentOn == DiskLedStatusIdentOn {
+		rc += append_s(rc, "Ident On", sep)
+	}
+
+	if s&DiskLedStatusIdentOff == DiskLedStatusIdentOff {
+		rc += append_s(rc, "Ident Off", sep)
+	}
+
+	if s&DiskLedStatusIdentUnknown == DiskLedStatusIdentUnknown {
+		rc += append_s(rc, "Ident Unknown", sep)
+	}
+
+	if s&DiskLedStatusFaultOn == DiskLedStatusFaultOn {
+		rc += append_s(rc, "Fault On", sep)
+	}
+
+	if s&DiskLedStatusFaultOff == DiskLedStatusFaultOff {
+		rc += append_s(rc, "Fault Off", sep)
+	}
+
+	if s&DiskLedStatusFaultUnknown == DiskLedStatusFaultUnknown {
+		rc += append_s(rc, "Fault Unknown", sep)
+	}
+
+	return rc
+}

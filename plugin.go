@@ -42,13 +42,13 @@ type PluginRegisterCb func(p *PluginRegister) error
 // PluginUnregisterCb callback to allow plugin to cleanup resources
 type PluginUnregisterCb func() error
 
-//SystemsCb callback to retrieve systems
+// SystemsCb callback to retrieve systems
 type SystemsCb func() ([]System, error)
 
-//DisksCb callback to retrieve disks
+// DisksCb callback to retrieve disks
 type DisksCb func() ([]Disk, error)
 
-//VolumesCb callback to retrieve volumes
+// VolumesCb callback to retrieve volumes
 type VolumesCb func(search ...string) ([]Volume, error)
 
 // VolumeCreateCb callback is for creating a volume
@@ -375,7 +375,7 @@ func (p *Plugin) Run() {
 		if err != nil {
 			if lsmError, ok := err.(*errors.LsmError); ok == true {
 
-				if lsmError.Code != errors.TransPortComunication {
+				if lsmError.Code != errors.TransPortCommunication {
 					p.tp.sendError(lsmError)
 					//fmt.Printf("Returned error %+v\n", lsmError)
 					continue

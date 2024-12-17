@@ -12,7 +12,7 @@ type PluginInfo struct {
 // System represents a storage system.
 // * A hardware RAID card
 // * A storage area network (SAN)
-// * A software solutions running on commidity hardware
+// * A software solutions running on commodity hardware
 // * A Linux system running NFS Service
 type System struct {
 	Class        string           `json:"class"`
@@ -94,8 +94,8 @@ type JobStatusType uint32
 
 const (
 
-	// JobStatusInprogress indicated job is in progress
-	JobStatusInprogress JobStatusType = 1 + iota
+	// JobStatusInProgress indicated job is in progress
+	JobStatusInProgress JobStatusType = 1 + iota
 
 	// JobStatusComplete indicates job is complete
 	JobStatusComplete
@@ -211,8 +211,8 @@ const (
 	// PoolUnsupportedVolumeGrow this pool does not allow growing volumes
 	PoolUnsupportedVolumeGrow PoolUnsupportedType = 1 << iota
 
-	// PoolUnsupportedVolumeShink this pool does not allow shrinking volumes
-	PoolUnsupportedVolumeShink
+	// PoolUnsupportedVolumeShrink this pool does not allow shrinking volumes
+	PoolUnsupportedVolumeShrink
 )
 
 // PoolStatusType type used to describe the status of pool
@@ -405,7 +405,7 @@ const (
 	//DiskStatusRemoved Disk was removed by administrator
 	DiskStatusRemoved
 
-	// DiskStatusStarting Disk is in the process of becomming ready.
+	// DiskStatusStarting Disk is in the process of becoming ready.
 	DiskStatusStarting
 
 	// DiskStatusStopping Disk is shutting down.
@@ -414,7 +414,7 @@ const (
 	// DiskStatusStopped Disk is stopped by administrator.
 	DiskStatusStopped
 
-	// DiskStatusInitializing Disk is not yet functional, could be initializing eg. RAID, zeroed or scrubed etc.
+	// DiskStatusInitializing Disk is not yet functional, could be initializing eg. RAID, zeroed or scrubbed etc.
 	DiskStatusInitializing
 
 	// DiskStatusMaintenanceMode In maintenance for bad sector scan, integrity check and etc
@@ -699,10 +699,10 @@ const (
 	// CapAgsGrantedToVol list access groups with access to volume
 	CapAgsGrantedToVol CapabilityType = 44
 
-	// CapHasChildDep indicates support for determing if volume has child dep.
+	// CapHasChildDep indicates support for determining if volume has child dep.
 	CapHasChildDep CapabilityType = 45
 
-	// CapChildDepRm indiates support for removing child dep.
+	// CapChildDepRm indicates support for removing child dep.
 	CapChildDepRm CapabilityType = 46
 
 	// CapAccessGroupCreateIscsiIqn supports ag creating with iSCSI initiator
@@ -985,7 +985,7 @@ const (
 	WriteCachePolicyWriteThrough
 )
 
-// WriteCacheStatus represente write cache status type
+// WriteCacheStatus represents write cache status type
 type WriteCacheStatus uint32
 
 const (
@@ -1028,7 +1028,7 @@ const (
 	ReadCacheStatusDisabled
 )
 
-// PhysicalDiskCache represents pyhsical disk caching type
+// PhysicalDiskCache represents physical disk caching type
 type PhysicalDiskCache uint32
 
 const (
@@ -1045,7 +1045,7 @@ const (
 	PhysicalDiskCacheUseDiskSetting
 )
 
-// VolumeCacheInfo contains informationa about volume caching values
+// VolumeCacheInfo contains information about volume caching values
 type VolumeCacheInfo struct {
 	WriteSetting       WriteCachePolicy
 	WriteStatus        WriteCacheStatus
@@ -1097,3 +1097,45 @@ const (
 	// DiskLedStatusFaultUnknown fault LED is unknown
 	DiskLedStatusFaultUnknown
 )
+
+func append_s(dest string, append string, sep string) string {
+	if len(dest) > 0 {
+		return sep + append
+	}
+	return append
+}
+
+func (s DiskLedStatusBitField) String() string {
+	var rc string
+	var sep = ", "
+
+	if s&DiskLedStatusUnknown == DiskLedStatusUnknown {
+		rc += append_s(rc, "Unknown", sep)
+	}
+
+	if s&DiskLedStatusIdentOn == DiskLedStatusIdentOn {
+		rc += append_s(rc, "Ident On", sep)
+	}
+
+	if s&DiskLedStatusIdentOff == DiskLedStatusIdentOff {
+		rc += append_s(rc, "Ident Off", sep)
+	}
+
+	if s&DiskLedStatusIdentUnknown == DiskLedStatusIdentUnknown {
+		rc += append_s(rc, "Ident Unknown", sep)
+	}
+
+	if s&DiskLedStatusFaultOn == DiskLedStatusFaultOn {
+		rc += append_s(rc, "Fault On", sep)
+	}
+
+	if s&DiskLedStatusFaultOff == DiskLedStatusFaultOff {
+		rc += append_s(rc, "Fault Off", sep)
+	}
+
+	if s&DiskLedStatusFaultUnknown == DiskLedStatusFaultUnknown {
+		rc += append_s(rc, "Fault Unknown", sep)
+	}
+
+	return rc
+}

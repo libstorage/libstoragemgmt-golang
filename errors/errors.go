@@ -86,7 +86,7 @@ const (
 	// NotFoundPool ... The specified pool was not found
 	NotFoundPool int32 = 203
 
-	// NotFoundFsSs ... The specfified file system/snap shot was not found
+	// NotFoundFsSs ... The specified file system/snap shot was not found
 	NotFoundFsSS int32 = 204
 
 	// NotFoundVolume ... The specified volume was not found
@@ -94,6 +94,9 @@ const (
 
 	// NotFoundNfsExport ... The specified NFS export was not found
 	NotFoundNfsExport int32 = 206
+
+	// NotFoundGeneric ...A non-specific resource was not found
+	NotFoundGeneric int32 = 207
 
 	// NotFoundSystem ... The specified system was not found
 	NotFoundSystem int32 = 208
@@ -122,8 +125,8 @@ const (
 	// NotEnoughSpace ... Insufficient space to complete the request
 	NotEnoughSpace int32 = 350
 
-	//TransPortComunication ... Issue reading/writing to plugin
-	TransPortComunication int32 = 400
+	//TransPortCommunication ... Issue reading/writing to plugin
+	TransPortCommunication int32 = 400
 
 	// TransPortSerialization ... Issue with serializing the payload of a request
 	TransPortSerialization int32 = 401

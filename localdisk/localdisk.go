@@ -9,6 +9,7 @@ package localdisk
 // #include <string.h>
 import "C"
 import (
+	"fmt"
 	"unsafe"
 
 	lsm "github.com/libstorage/libstoragemgmt-golang"
@@ -63,7 +64,7 @@ func List() ([]string, error) {
 	return disks, nil
 }
 
-// Vpd83Seach seaches local disks for vpd
+// Vpd83Seach searches local disks for vpd
 func Vpd83Seach(vpd string) ([]string, error) {
 
 	cs := C.CString(vpd)
@@ -86,7 +87,7 @@ func Vpd83Seach(vpd string) ([]string, error) {
 }
 
 // SerialNumGet retrieves the serial number for the local
-// disk with the specfified path
+// disk with the specified path
 func SerialNumGet(diskPath string) (string, error) {
 	dp := C.CString(diskPath)
 	defer C.free(unsafe.Pointer(dp))
@@ -233,4 +234,126 @@ func LinkSpeedGet(diskPath string) (uint32, error) {
 		return uint32(linkSpeed), nil
 	}
 	return 0, processError(int(rc), lsmError)
+}
+
+type LedSlots struct {
+	handle *C.lsm_led_handle
+}
+
+func LedSlotsHandleGet() (*LedSlots, error) {
+	var l_handle *C.lsm_led_handle
+	var rc = C.lsm_led_handle_get(&l_handle, 0)
+
+	if rc == 0 {
+		return &LedSlots{handle: l_handle}, nil
+	}
+
+	return nil, &errors.LsmError{
+		Code:    int32(rc),
+		Message: fmt.Sprintf("Unexpected error: code = [%d]", rc)}
+
+}
+
+func LedSlotsHandleFree(led_slots *LedSlots) {
+	C.lsm_led_handle_free(led_slots.handle)
+}
+
+type LedSlot struct {
+	SlotId string
+	Device string
+}
+
+func (l *LedSlots) Slots() ([]LedSlot, error) {
+	var slots []LedSlot
+	var itr *C.lsm_led_slot_itr
+	var lsmError *C.lsm_error
+
+	var rc = C.lsm_led_slot_iterator_get(l.handle, &itr, &lsmError, 0)
+	if int32(rc) == errors.Ok {
+		for {
+			var slot = C.lsm_led_slot_next(l.handle, itr)
+			if slot != nil {
+				var id = C.lsm_led_slot_id(slot)
+				var device = C.lsm_led_slot_device(slot)
+
+				var slot_id = C.GoString(id)
+				var slot_device string
+
+				// The device node can be null as not every device may have a device node
+				if device != nil {
+					slot_device = C.GoString(device)
+				}
+
+				slots = append(slots, LedSlot{SlotId: slot_id, Device: slot_device})
+
+			} else {
+				break
+			}
+		}
+
+		// Free the slot iterator
+		C.lsm_led_slot_iterator_free(l.handle, itr)
+	}
+	return slots, processError(int(rc), lsmError)
+}
+
+func (l *LedSlots) StatusGet(slot *LedSlot) (lsm.DiskLedStatusBitField, error) {
+	var itr *C.lsm_led_slot_itr
+	var lsmError *C.lsm_error
+
+	var rc = C.lsm_led_slot_iterator_get(l.handle, &itr, &lsmError, 0)
+	if int32(rc) == errors.Ok {
+		defer C.lsm_led_slot_iterator_free(l.handle, itr)
+		for {
+			var c_slot_handle = C.lsm_led_slot_next(l.handle, itr)
+			if c_slot_handle != nil {
+				var id = C.lsm_led_slot_id(c_slot_handle)
+				var slot_id = C.GoString(id)
+
+				if slot.SlotId == slot_id {
+					var ledStatus = C.lsm_led_slot_status_get(c_slot_handle)
+					return lsm.DiskLedStatusBitField(ledStatus), nil
+				}
+
+			} else {
+				break
+			}
+		}
+		return 0, &errors.LsmError{
+			Code:    errors.NotFoundGeneric,
+			Message: fmt.Sprintf("Slot with id = %v not found!", slot.SlotId)}
+	}
+	return 0, processError(int(rc), lsmError)
+}
+
+func (l *LedSlots) StatusSet(slot *LedSlot, led_status lsm.DiskLedStatusBitField) error {
+	var itr *C.lsm_led_slot_itr
+	var lsmError *C.lsm_error
+
+	var rc = C.lsm_led_slot_iterator_get(l.handle, &itr, &lsmError, 0)
+	if int32(rc) == errors.Ok {
+		defer C.lsm_led_slot_iterator_free(l.handle, itr)
+		for {
+			var c_slot_handle = C.lsm_led_slot_next(l.handle, itr)
+			if c_slot_handle != nil {
+				var id = C.lsm_led_slot_id(c_slot_handle)
+				var slot_id = C.GoString(id)
+
+				if slot.SlotId == slot_id {
+					var status = C.lsm_led_slot_status_set(l.handle, c_slot_handle, C.uint32_t(led_status), &lsmError, 0)
+					if int32(status) == errors.Ok {
+						return nil
+					}
+					return processError(int(status), lsmError)
+				}
+
+			} else {
+				break
+			}
+		}
+		return &errors.LsmError{
+			Code:    errors.NotFoundGeneric,
+			Message: fmt.Sprintf("Slot with id = %v not found!", slot.SlotId)}
+	}
+	return processError(int(rc), lsmError)
 }

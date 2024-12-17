@@ -285,7 +285,7 @@ func (c *ClientConnection) JobStatus(jobID string, returnedResult interface{}) (
 	}
 
 	switch status {
-	case JobStatusInprogress:
+	case JobStatusInProgress:
 		var percent uint8
 		if percentError := json.Unmarshal(result[1], &percent); percentError != nil {
 			return JobStatusError, 0, percentError
@@ -356,13 +356,13 @@ func (c *ClientConnection) getJobOrNone(err error, returned json.RawMessage, syn
 // JobWait waits for the job to finish and retrieves the end result in "returnedResult".
 func (c *ClientConnection) JobWait(jobID string, returnedResult interface{}) error {
 
-	for true {
+	for {
 		var status, _, err = c.JobStatus(jobID, returnedResult)
 		if err != nil {
 			return err
 		}
 
-		if status == JobStatusInprogress {
+		if status == JobStatusInProgress {
 			time.Sleep(time.Millisecond * 250)
 			continue
 		} else if status == JobStatusComplete {

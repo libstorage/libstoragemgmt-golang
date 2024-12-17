@@ -42,13 +42,13 @@ type PluginRegisterCb func(p *PluginRegister) error
 // PluginUnregisterCb callback to allow plugin to cleanup resources
 type PluginUnregisterCb func() error
 
-//SystemsCb callback to retrieve systems
+// SystemsCb callback to retrieve systems
 type SystemsCb func() ([]System, error)
 
-//DisksCb callback to retrieve disks
+// DisksCb callback to retrieve disks
 type DisksCb func() ([]Disk, error)
 
-//VolumesCb callback to retrieve volumes
+// VolumesCb callback to retrieve volumes
 type VolumesCb func(search ...string) ([]Volume, error)
 
 // VolumeCreateCb callback is for creating a volume

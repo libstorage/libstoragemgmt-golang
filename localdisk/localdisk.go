@@ -64,21 +64,21 @@ func List() ([]string, error) {
 	return disks, nil
 }
 
-// Vpd83Seach searches local disks for vpd
-func Vpd83Seach(vpd string) ([]string, error) {
+// Vpd83Search searches local disks for vpd
+func Vpd83Search(vpd string) ([]string, error) {
 
 	cs := C.CString(vpd)
 	defer C.free(unsafe.Pointer(cs))
 
 	var deviceList []string
 
-	var slist *C.lsm_string_list
+	var str_list *C.lsm_string_list
 	var lsmError *C.lsm_error
 
-	var err = C.lsm_local_disk_vpd83_search(cs, &slist, &lsmError)
+	var err = C.lsm_local_disk_vpd83_search(cs, &str_list, &lsmError)
 
 	if err == 0 {
-		deviceList = getStrings(slist, true)
+		deviceList = getStrings(str_list, true)
 	} else {
 		return deviceList, processError(int(err), lsmError)
 	}
@@ -236,16 +236,19 @@ func LinkSpeedGet(diskPath string) (uint32, error) {
 	return 0, processError(int(rc), lsmError)
 }
 
-type LedSlots struct {
+// Opaque type for LED Slots API
+type LedSlotsHandle struct {
 	handle *C.lsm_led_handle
 }
 
-func LedSlotsHandleGet() (*LedSlots, error) {
+// Retrieve the handle to use for interacting with LED Slots, make sure to call LedSlotsHandleFree
+// when done
+func LedSlotsHandleGet() (*LedSlotsHandle, error) {
 	var l_handle *C.lsm_led_handle
 	var rc = C.lsm_led_handle_get(&l_handle, 0)
 
 	if rc == 0 {
-		return &LedSlots{handle: l_handle}, nil
+		return &LedSlotsHandle{handle: l_handle}, nil
 	}
 
 	return nil, &errors.LsmError{
@@ -254,16 +257,19 @@ func LedSlotsHandleGet() (*LedSlots, error) {
 
 }
 
-func LedSlotsHandleFree(led_slots *LedSlots) {
+// Frees the resources used by the LED Slot API, calling this is required to prevent a memory leak
+func LedSlotsHandleFree(led_slots *LedSlotsHandle) {
 	C.lsm_led_handle_free(led_slots.handle)
 }
 
+// Information about a specific LED slot
 type LedSlot struct {
-	SlotId string
-	Device string
+	SlotId string // The slot identifier
+	Device string // The slot device node, if it has one
 }
 
-func (l *LedSlots) Slots() ([]LedSlot, error) {
+// Retrieves all the LED slots
+func (l *LedSlotsHandle) SlotsGet() ([]LedSlot, error) {
 	var slots []LedSlot
 	var itr *C.lsm_led_slot_itr
 	var lsmError *C.lsm_error
@@ -297,7 +303,8 @@ func (l *LedSlots) Slots() ([]LedSlot, error) {
 	return slots, processError(int(rc), lsmError)
 }
 
-func (l *LedSlots) StatusGet(slot *LedSlot) (lsm.DiskLedStatusBitField, error) {
+// Retrieves the current status of the LED slot
+func (l *LedSlotsHandle) StatusGet(slot *LedSlot) (lsm.DiskLedStatusBitField, error) {
 	var itr *C.lsm_led_slot_itr
 	var lsmError *C.lsm_error
 
@@ -326,7 +333,8 @@ func (l *LedSlots) StatusGet(slot *LedSlot) (lsm.DiskLedStatusBitField, error) {
 	return 0, processError(int(rc), lsmError)
 }
 
-func (l *LedSlots) StatusSet(slot *LedSlot, led_status lsm.DiskLedStatusBitField) error {
+// Sets the LED slot
+func (l *LedSlotsHandle) StatusSet(slot *LedSlot, led_status lsm.DiskLedStatusBitField) error {
 	var itr *C.lsm_led_slot_itr
 	var lsmError *C.lsm_error
 

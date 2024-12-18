@@ -143,7 +143,7 @@ func TestAvailablePluginsBadUds(t *testing.T) {
 	os.Setenv(KEY, current)
 }
 
-func TestBadSeach(t *testing.T) {
+func TestBadSearch(t *testing.T) {
 	var c, _ = lsm.Client(URI, PASSWORD, TMO)
 
 	var _, sE = c.Volumes("what")
@@ -172,7 +172,7 @@ func TestPoolSearch(t *testing.T) {
 	assert.Equal(t, nil, c.Close())
 }
 
-func TestGoodSeach(t *testing.T) {
+func TestGoodSearch(t *testing.T) {
 	var c, _ = lsm.Client(URI, PASSWORD, TMO)
 
 	var volumes, sE = c.Volumes("system_id", "sim-01")
@@ -1166,7 +1166,7 @@ func TestLocalDisk(t *testing.T) {
 		if vpdE == nil {
 			assert.True(t, len(vpd) > 0)
 
-			var search, searchErr = disks.Vpd83Seach(vpd)
+			var search, searchErr = disks.Vpd83Search(vpd)
 			assert.Nil(t, searchErr)
 			assert.True(t, len(search) > 0)
 			t.Logf("vpd search result = %v %s\n", search, d)
@@ -1178,7 +1178,7 @@ func TestLocalDisk(t *testing.T) {
 }
 
 func TestVpdMissingSearch(t *testing.T) {
-	var paths, err = disks.Vpd83Seach(rs("", 16))
+	var paths, err = disks.Vpd83Search(rs("", 16))
 	assert.Nil(t, err)
 	assert.True(t, len(paths) == 0)
 }

@@ -64,8 +64,8 @@ func List() ([]string, error) {
 	return disks, nil
 }
 
-// Vpd83Seach searches local disks for vpd
-func Vpd83Seach(vpd string) ([]string, error) {
+// Vpd83Search searches local disks for vpd
+func Vpd83Search(vpd string) ([]string, error) {
 
 	cs := C.CString(vpd)
 	defer C.free(unsafe.Pointer(cs))

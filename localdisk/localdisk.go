@@ -72,13 +72,13 @@ func Vpd83Search(vpd string) ([]string, error) {
 
 	var deviceList []string
 
-	var slist *C.lsm_string_list
+	var str_list *C.lsm_string_list
 	var lsmError *C.lsm_error
 
-	var err = C.lsm_local_disk_vpd83_search(cs, &slist, &lsmError)
+	var err = C.lsm_local_disk_vpd83_search(cs, &str_list, &lsmError)
 
 	if err == 0 {
-		deviceList = getStrings(slist, true)
+		deviceList = getStrings(str_list, true)
 	} else {
 		return deviceList, processError(int(err), lsmError)
 	}

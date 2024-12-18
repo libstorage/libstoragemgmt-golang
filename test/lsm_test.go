@@ -1531,7 +1531,7 @@ func TestLocalDiskLedSlotsGet(t *testing.T) {
 	var handle, err = disks.LedSlotsHandleGet()
 	assert.Nil(t, err)
 
-	slots, err = handle.Slots()
+	slots, err = handle.SlotsGet()
 	assert.Nil(t, err)
 
 	for _, s := range slots {
@@ -1564,7 +1564,7 @@ func TestLocalDiskLedSlotsGetSet(t *testing.T) {
 	var handle, err = disks.LedSlotsHandleGet()
 	assert.Nil(t, err)
 
-	slots, err = handle.Slots()
+	slots, err = handle.SlotsGet()
 	assert.Nil(t, err)
 
 	for _, s := range slots {

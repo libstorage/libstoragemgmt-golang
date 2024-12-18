@@ -1567,6 +1567,10 @@ func TestLocalDiskLedSlotsGetSet(t *testing.T) {
 	slots, err = handle.SlotsGet()
 	assert.Nil(t, err)
 
+	if len(slots) == 0 {
+		t.Skip("No local disks to test!")
+	}
+
 	for _, s := range slots {
 
 		if len(s.Device) > 0 {
